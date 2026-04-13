@@ -1,11 +1,17 @@
 # SRE_DevOps_2026
 
 Linux -- file management, file operations, packetwalk(dns,each layer wise) how the packets flow
-bash/python -- classes, OOP
+
+bash/python -- classes, OOPS
+
 cicd (jenkins, gitlab CI)
+
 kubernetes/helm/docker -- distroless images, identify the best practices and implement them
+
 terraform -- kodecloud.com, best practices, state locking, use modules
+
 Observability -- promotheus and grafana
+
 networking -- 
 
 
