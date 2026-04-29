@@ -1,0 +1,72 @@
+# SRE Cheatsheet
+
+## Key Metrics (Four Golden Signals)
+- **Latency**: Time to serve a request (p50, p99, p99.9 percentiles)
+- **Traffic**: Requests per second (QPS, throughput)
+- **Errors**: Failed requests (4xx, 5xx status codes, timeouts)
+- **Saturation**: Resource utilization (CPU, memory, disk, network I/O)
+
+## SLO/SLI/SLA
+- **SLI**: Service Level Indicator (actual measurement, e.g., 99.95% requests responded <200ms)
+- **SLO**: Service Level Objective (target, e.g., 99.9% uptime, defines acceptable risk)
+- **SLA**: Service Level Agreement (contractual obligation, penalties for breach)
+- **Error Budget**: SLO minus actual performance; guides deployment velocity
+
+## Incident Response
+1. Detect → Alert → Acknowledge → Mitigate → Resolve → Postmortem
+2. Keep runbooks updated with troubleshooting steps
+3. Practice disaster recovery regularly (RTO/RPO targets)
+4. Blameless postmortems: focus on systems, not people
+5. Track MTTR (Mean Time to Recovery), MTTD (Detection)
+
+## On-Call Best Practices
+- Rotate on-call duties fairly (avoid burnout)
+- Clear escalation paths and ownership
+- Document known issues and workarounds
+- Monitor alert fatigue; tune alert sensitivity
+- Provide on-call support resources (runbooks, scripts)
+
+## GCP SRE Tools
+- **Monitoring**: Cloud Monitoring, Managed Service for Prometheus, Cloud Trace
+- **Logging**: Cloud Logging, Pub/Sub for log streaming
+- **Incident**: Cloud Incident Response, integration with PagerDuty/OpsGenie
+- **IaC**: Terraform, Deployment Manager, Config Connector
+- **CI/CD**: Cloud Build, Cloud Deploy, Artifact Registry
+
+## Toil vs. Work
+- **Toil**: Manual, repetitive, temporary work; no long-term value (eliminate via automation)
+- **Work**: Strategic improvements, engineering projects, innovation
+
+## Reliability Principles
+- Embrace SLOs, not 100% uptime; use error budgets
+- Eliminate toil through automation and self-service
+- Monitor and alert on meaningful metrics (avoid noise)
+- Automate routine tasks (deployments, scaling, remediation)
+- Design for resilience: redundancy, graceful degradation, chaos engineering
+
+## Interview Prep: Common Scenarios
+
+### Infrastructure Design
+- Multi-region/multi-zone for HA; load balancing (Cloud Load Balancer)
+- Managed services reduce operational toil (Cloud SQL, Firestore vs. self-managed DBs)
+- VPC design, security policies, IAM roles (least privilege)
+- Cost optimization: committed use discounts, resource rightsizing
+
+### Pod Crashes & Troubleshooting
+- **OOMKilled**: Increase memory requests/limits; profile heap usage; optimize code
+- **CrashLoopBackOff**: Check logs (`kubectl logs`), init containers, dependency availability
+- **ImagePullBackOff**: Verify image registry access, credentials, image exists
+- **Pending**: Insufficient cluster resources; scale node pool or adjust pod requests
+- **Liveness/Readiness failures**: Tune probe thresholds; fix app health checks
+
+### Production Incident Patterns
+- Cascading failures: implement circuit breakers, bulkheads, timeouts
+- Database connection pool exhaustion: monitor connections, tune pool size
+- Memory leaks: use profilers (pprof, Datadog); correlate with deployments
+- Network saturation: analyze traffic patterns; implement rate limiting, caching
+
+### Monitoring & Alerting Strategy
+- Alert on SLO burn rate (faster detection), not just thresholds
+- Use distributed tracing (Cloud Trace) for latency analysis
+- Log aggregation with structured logging (JSON); query anomalies
+- Correlate metrics/logs/traces for faster MTTR
