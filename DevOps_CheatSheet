@@ -1,0 +1,150 @@
+# DevOps Cheat Sheet
+
+## Git
+- `git init`
+- `git clone <repo>`
+- `git status`
+- `git add <file>`
+- `git commit -m "message"`
+- `git branch`
+- `git checkout <branch>`
+- `git checkout -b <new-branch>`
+- `git merge <branch>`
+- `git pull`
+- `git push`
+- `git log --oneline --graph --all`
+
+## CI/CD
+- Build: compile, test, package
+- Test: unit, integration, e2e
+- Deploy: staging, production
+- Common tools: Jenkins, GitHub Actions, GitLab CI, CircleCI, Azure DevOps
+- Pipeline stages: checkout -> build -> test -> package -> deploy
+- Example YAML steps:
+    - checkout code
+    - install dependencies
+    - run tests
+    - build artifact
+    - deploy artifact
+
+## Containers
+- `docker build -t <name>:<tag> .`
+- `docker images`
+- `docker run -d --name <container> <image>`
+- `docker ps`
+- `docker exec -it <container> /bin/sh`
+- `docker logs <container>`
+- `docker stop <container>`
+- `docker rm <container>`
+- `docker-compose up -d`
+- Dockerfile basics:
+    - `FROM`
+    - `WORKDIR`
+    - `COPY`
+    - `RUN`
+    - `EXPOSE`
+    - `CMD` / `ENTRYPOINT`
+
+## Kubernetes
+- `kubectl get pods`
+- `kubectl get svc`
+- `kubectl get deployments`
+- `kubectl apply -f <file>`
+- `kubectl delete -f <file>`
+- `kubectl describe pod <name>`
+- `kubectl logs <pod>`
+- `kubectl exec -it <pod> -- /bin/sh`
+
+## Helm
+- Helm charts: package manager for Kubernetes
+- `helm create <chart>`
+- `helm install <release> <chart>`
+- `helm upgrade <release> <chart>`
+- `helm list`
+- `helm uninstall <release>`
+- `helm repo add <name> <url>`
+- `helm repo update`
+- Chart structure: Chart.yaml, values.yaml, templates/
+
+## ArgoCD
+- GitOps tool for Kubernetes
+- `argocd login <server>`
+- `argocd app create <app> --repo <repo> --path <path> --dest-server <server> --dest-namespace <ns>`
+- `argocd app get <app>`
+- `argocd app sync <app>`
+- `argocd app delete <app>`
+- Sync policies: manual, auto
+- Declarative config via YAML
+
+## GitOps
+- Practice of using Git as single source of truth for infrastructure and applications
+- Principles: declarative, versioned, immutable, automated
+- Tools: ArgoCD, Flux, Jenkins X
+- Workflows: push to Git -> CI -> deploy via CD tool
+- Benefits: auditability, rollback via Git, consistency
+
+## Jenkins
+- CI/CD server
+- `jenkins-cli.jar` for CLI commands
+- Pipeline syntax: Declarative vs Scripted
+- Plugins: Git, Docker, Kubernetes
+- Webhooks for triggers
+- Blue Ocean for visual pipelines
+- Master-agent architecture
+
+## Infrastructure as Code
+- Terraform: `.tf` files
+    - `terraform init`
+    - `terraform plan`
+    - `terraform apply`
+    - `terraform destroy`
+- CloudFormation / ARM / Bicep
+- Ansible:
+    - `ansible-playbook playbook.yml`
+    - inventory file
+    - tasks, roles, handlers
+
+## Monitoring & Logging
+- Prometheus: metrics collection, alert rules
+- Grafana: dashboards, panels
+- ELK / EFK: Elasticsearch, Logstash/Fluentd, Kibana
+- Alerts: PagerDuty, Opsgenie, Slack
+- Health checks, uptime, error rates, latency
+
+## Security & Compliance
+- Secrets management: Vault, AWS Secrets Manager, Azure Key Vault
+- IAM least privilege
+- Static analysis: SAST, dependency scanning
+- Container scanning
+- Patch management
+- Network security groups, firewalls
+
+## Common Commands
+- Linux:
+    - `top`, `htop`
+    - `df -h`
+    - `du -sh ./*`
+    - `ps aux | grep <process>`
+    - `netstat -tulnp`
+    - `ss -tulnp`
+- Systemctl:
+    - `systemctl status <service>`
+    - `systemctl start <service>`
+    - `systemctl stop <service>`
+    - `systemctl enable <service>`
+
+## Best Practices
+- Automate everything
+- Use version control for code and config
+- Keep CI pipeline fast and reliable
+- Maintain repeatable environments
+- Deploy small, frequent changes
+- Rollback strategy
+- Use observability and metrics
+- Enforce code review and testing
+
+## Notes
+- Keep scripts idempotent
+- Use environment variables for config
+- Avoid hard-coded secrets
+- Document processes and runbooks

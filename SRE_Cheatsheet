@@ -70,3 +70,9 @@
 - Use distributed tracing (Cloud Trace) for latency analysis
 - Log aggregation with structured logging (JSON); query anomalies
 - Correlate metrics/logs/traces for faster MTTR
+
+### Prod incidents examples
+
+ - Order dip --> Vale metrics(Traffic/Volume, latency/response time, 4xx/5xx) --> isolate the issue(appwise/region wise) --> Logs (Dynatrace/ Sentinel one) --> Mitigation (Rollback changes/ failover traffic in case of regional outage/ scale up in case of capacity issues / case if google outage )
+
+ 

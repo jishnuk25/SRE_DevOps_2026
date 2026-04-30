@@ -1,0 +1,52 @@
+# GCP Cloud Cheat Sheet
+
+## Overview
+Google Cloud Platform (GCP) provides a suite of cloud computing services. This cheat sheet covers key concepts, commands, and services, with a focus on managed identity.
+
+## Key Services
+- **Compute Engine**: Virtual machines (VMs).
+- **Kubernetes Engine (GKE)**: Managed Kubernetes.
+- **Cloud Storage**: Object storage.
+- **BigQuery**: Data warehouse.
+- **Cloud Functions**: Serverless functions.
+- **App Engine**: PaaS for web apps.
+- **Cloud IAM**: Identity and Access Management.
+
+## Common gcloud Commands
+- Authenticate: `gcloud auth login`
+- Set project: `gcloud config set project [PROJECT_ID]`
+- List projects: `gcloud projects list`
+- Create VM: `gcloud compute instances create [INSTANCE_NAME] --zone=[ZONE]`
+- List VMs: `gcloud compute instances list`
+- Deploy to GKE: `gcloud container clusters create [CLUSTER_NAME] --zone=[ZONE]`
+- Upload to Cloud Storage: `gsutil cp [FILE] gs://[BUCKET_NAME]/`
+- Query BigQuery: `bq query "SELECT * FROM [DATASET.TABLE] LIMIT 10"`
+
+## Managed Identity
+Managed identity in GCP refers to **Service Accounts** and **Workload Identity Federation**, which allow secure access to resources without storing credentials.
+
+### Service Accounts
+- **Purpose**: Represent non-human users for applications/services.
+- **Creation**: `gcloud iam service-accounts create [SA_NAME] --description="[DESC]" --display-name="[DISPLAY_NAME]"`
+- **Attach to VM**: `gcloud compute instances set-service-account [INSTANCE_NAME] --service-account=[SA_EMAIL] --scopes=[SCOPES]`
+- **Key Management**: Use keys for authentication (e.g., JSON keys), but prefer metadata server for VMs.
+- **Best Practice**: Use short-lived tokens via Application Default Credentials (ADC).
+
+### Workload Identity Federation
+- **Purpose**: Allows workloads outside GCP (e.g., on-premises or other clouds) to access GCP resources securely.
+- **Setup**:
+	1. Create a workload identity pool: `gcloud iam workload-identity-pools create [POOL_NAME] --location=global`
+	2. Add provider (e.g., AWS): `gcloud iam workload-identity-pools providers create-aws [PROVIDER_NAME] --workload-identity-pool=[POOL_NAME] --account-id=[AWS_ACCOUNT_ID]`
+	3. Grant IAM roles to the service account for the workload.
+- **Usage**: Configure external systems to use federated identity for seamless access.
+
+### IAM Roles and Permissions
+- **Roles**: Predefined (e.g., `roles/editor`) or custom.
+- **Grant Role**: `gcloud projects add-iam-policy-binding [PROJECT_ID] --member="serviceAccount:[SA_EMAIL]" --role="[ROLE]"`
+- **List Roles**: `gcloud iam roles list`
+
+## Security Best Practices
+- Use least privilege.
+- Rotate service account keys regularly.
+- Enable audit logging.
+- Use VPC Service Controls for perimeter security.
