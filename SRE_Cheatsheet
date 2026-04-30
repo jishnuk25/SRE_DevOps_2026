@@ -75,4 +75,24 @@
 
  - Order dip --> Vale metrics(Traffic/Volume, latency/response time, 4xx/5xx) --> isolate the issue(appwise/region wise) --> Logs (Dynatrace/ Sentinel one) --> Mitigation (Rollback changes/ failover traffic in case of regional outage/ scale up in case of capacity issues / case if google outage )
 
- 
+### HTTP Response Codes & Common Causes
+
+#### 4xx Client Errors
+- **400 Bad Request**: Malformed request syntax, invalid parameters
+- **401 Unauthorized**: Missing or invalid authentication credentials
+- **403 Forbidden**: Authenticated but lacks permission for resource
+- **404 Not Found**: Resource doesn't exist; check endpoint/API version
+- **429 Too Many Requests**: Rate limit exceeded; implement backoff/retry logic
+- **500 Internal Server Error**: Server-side bug, unhandled exception, dependency failure
+
+#### 5xx Server Errors
+- **502 Bad Gateway**: Upstream service unavailable, connection timeout, load balancer issue
+- **503 Service Unavailable**: Server overloaded, maintenance mode, or cascading failure
+- **504 Gateway Timeout**: Upstream service slow/unresponsive; check latency, timeouts
+
+#### Investigation Steps
+- Check application logs for error details and stack traces
+- Verify upstream/downstream service health (health checks, endpoints)
+- Monitor resource utilization (CPU, memory, connections)
+- Review recent deployments or configuration changes
+- Analyze traffic patterns and latency spikes correlating with errors
