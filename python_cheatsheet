@@ -1,6 +1,44 @@
 # SRE/DevOps Python Cheatsheet
 
 # ====================
+# exponential retries with jitter
+# ====================
+
+import time
+import random
+import requests
+
+def call_service(url):
+    for attempt in range(5):  # try up to 5 times
+        try:
+            response = requests.get(url)
+            response.raise_for_status()
+            return response.text  # success
+        except Exception as e:
+            # exponential backoff with jitter
+            wait = (2 ** attempt) + random.uniform(0, 1)
+            print(f"Attempt {attempt+1} failed: {e}. Retrying in {wait:.2f}s")
+            time.sleep(wait)
+    return None  # failed after retries
+
+# Example usage
+result = call_service("https://httpbin.org/status/503")
+print("Result:", result)
+
+🪜 Steps to explain in an interview:
+Loop through attempts → up to 5 retries.
+
+Try the request → if it fails, catch the exception.
+
+Exponential backoff → 2 ** attempt gives delays like 1s, 2s, 4s, 8s…
+
+Add jitter → random.uniform(0,1) adds a small random wait so multiple clients don’t retry at the same exact time.
+
+Sleep before retrying → time.sleep(wait).
+
+Stop after max attempts → return None if all fail.
+
+# ====================
 # Logging & Monitoring
 # ====================
 import logging

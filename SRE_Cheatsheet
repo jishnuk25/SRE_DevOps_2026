@@ -54,7 +54,7 @@
 
 ### Pod Crashes & Troubleshooting
 - **OOMKilled**: Increase memory requests/limits; profile heap usage; optimize code
-- **CrashLoopBackOff**: Check logs (`kubectl logs`), init containers, dependency availability
+- **CrashLoopBackOff**: Check logs (`kubectl logs`), init containers, dependency availability,  bad configuration or missing files.
 - **ImagePullBackOff**: Verify image registry access, credentials, image exists
 - **Pending**: Insufficient cluster resources; scale node pool or adjust pod requests
 - **Liveness/Readiness failures**: Tune probe thresholds; fix app health checks
