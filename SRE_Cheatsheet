@@ -103,3 +103,7 @@ Q/A
 How would you design a splunk SLA dashboard?
 
     I wouldn't start with splunk. I'd start with the business service. First I'd identify critical user journeys, define SLIs from user-facing telemetry, establish business approved SLOs and corresponding error budgets, then use splunk to calculate those SLIs from logs and metrics. The dashboard would include real-time SLI compliance, SLO attainment, error-budget burn rate, dependency health, and trend analysis. The goal isn't just monitoring; it's enabling proactive reliability management and detecting degradation before SLA breach occurs.
+
+How do you handle error reporting after an outage?
+
+    We follow a blameless post-mortem culture. Once an incident is mitigated, the SRE team compiles an error report detailing the timeline, impact, and root cause analysis. We document this in Confluence, highlight the technical triggers and operational gaps, and assign trackable action items to prevent recurrence. For live incidents, we provide concise updates via dedicated comms channels and executive summaries.
