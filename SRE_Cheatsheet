@@ -96,3 +96,10 @@
 - Monitor resource utilization (CPU, memory, connections)
 - Review recent deployments or configuration changes
 - Analyze traffic patterns and latency spikes correlating with errors
+
+
+Q/A
+
+How would you design a splunk SLA dashboard?
+
+    I wouldn't start with splunk. I'd start with the business service. First I'd identify critical user journeys, define SLIs from user-facing telemetry, establish business approved SLOs and corresponding error budgets, then use splunk to calculate those SLIs from logs and metrics. The dashboard would include real-time SLI compliance, SLO attainment, error-budget burn rate, dependency health, and trend analysis. The goal isn't just monitoring; it's enabling proactive reliability management and detecting degradation before SLA breach occurs.

@@ -1,0 +1,71 @@
+GCP:
+
+Workload identity-
+Before workload identity, GKE workloads typically authenticated to GCP using IAM Service account json keys stored as k8s secrets or by using
+the node's service account through the metadata server. Both approaches had security drawbacks such as long lived credentials and overlay broad
+permissions.
+Workload identity solved this by mapping k8s service accounts to IAM identities and issuing short-lived credentials without storing keys.
+
+KSA(kubernetes service account)
+
+    apiVersion: v1
+    kind: ServiceAccount
+    metadata:
+      name: secret-reader
+      namespace: prod
+
+Pod
+
+    apiVersion: v1
+    kind: Pod
+    metadata:
+      name: api-app
+    spec:
+      serviceAccountName: secret-reader
+      containers:
+      - name: app
+        image: us-docker-pkg.dev/project/api:v1
+
+
+This pod runs as
+
+    prod/secret-reader
+
+To allow the pod to read secrets from secret manager-
+
+create gcp service account
+    
+    gcloud iam service-accounts create secret-reader-gsa
+
+    output: secret-reader-gsa@my-project.iam.gserviceaccount.com
+
+grant secret manager permission
+
+    gcloud projects add-iam-policy-binding my-project \
+        --member="serviceAccount:secret-reader-gsa@my-project.iam.gserviceaccount.com" \
+        --role="roles/secretmanager.secretAccessor"
+
+Now the GSA can read secrets.
+
+Bind KSA to GSA
+
+    gcloud iam service-accounts add-iam-policy-binding \
+    secret-reader-gsa@my-project.iam.gserviceaccount.com \
+    --role roles/iam.workloadIdentityUser \
+    --member \
+    "serviceAccount:my-project.svc.id.goog[prod/secret-reader]"
+
+Annotate KSA
+
+    kubectl annotate serviceaccount secret-reader \
+    iam.gke.io/gcp-service-account=\
+    secret-reader-gsa@my-project.iam.gserviceaccount.com
+
+Runtime flow
+
+pod-->KSA token-->GKE metadata server-->google sts-->temporary OAuth token-->secret manager API
+
+No json key exists. Google issues short-lived creds automatically.
+
+-------------------------------------------------------------------------------
+
